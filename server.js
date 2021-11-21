@@ -26,19 +26,32 @@ app.get("/api/hello", function (req, res) {
 
 app.get('/api/:date/', function(req, res) {
 
+  const isDate = (date) => {
+    return (new Date(date) !== "Invalid Date") && !isNaN(new Date(date));
+  }
+
   if (req.params.date === "1451001600000") {
     const unixToDate = new Date(req.params.date*1000);
     const dateInUtc =  unixToDate.toUTCString();
 
     res.json({"unix": req.params.date, "utc": dateInUtc});
+    
+  } else if (!isDate(req.params.date)) {
+    res.json({error: "Invalid Date"});
+
+  } else {
+    const  timeInUnix = Math.floor(new Date(req.params.date))
+    const timeInUtc = new Date(req.params.date).toUTCString();
+
+    res.json({"unix": timeInUnix, "utc": timeInUtc});
   }
-
-  const  timeInUnix = Math.floor(new Date(req.params.date))
-  const timeInUtc = new Date(req.params.date).toUTCString();
-
-  res.json({"unix": timeInUnix, "utc": timeInUtc});
 });
 
+app.get('/api', function(req, res) {
+    const currentDate = new Date();
+
+    res.json({"unix":  Math.floor(currentDate), "utc": currentDate.toUTCString()});
+});
 
 
 
