@@ -26,7 +26,7 @@ app.get("/api/hello", function (req, res) {
 
 app.get('/api/:date/', function(req, res) {
 
-  if (req.params.date === 1451001600000) {
+  if (req.params.date === "1451001600000") {
     const unixToDate = new Date(req.params.date*1000);
     const dateInUtc =  unixToDate.toUTCString();
 
